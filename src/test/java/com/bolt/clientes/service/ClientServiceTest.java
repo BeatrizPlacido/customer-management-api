@@ -71,11 +71,11 @@ class ClientServiceTest {
     private Client savedClient(String unitState) {
         Address clientAddress = Address.builder()
                 .id(1L).street("Rua Teste").zipCode("01310100").number("100")
-                .neighborhood("Bairro Teste").state("RJ").country("Brasil").type(AddressType.CLIENT).build();
+                .neighborhood("Bairro Teste").state("RJ").type(AddressType.CLIENT).build();
 
         Address unitAddress = Address.builder()
                 .id(2L).street("Rua Teste").zipCode("01310100").number("100")
-                .neighborhood("Bairro Teste").state(unitState).country("Brasil").type(AddressType.CONSUMER_UNIT).build();
+                .neighborhood("Bairro Teste").state(unitState).type(AddressType.CONSUMER_UNIT).build();
 
         ConsumerUnit unit = ConsumerUnit.builder()
                 .id(1L).name("Minha Casa").installationNumber(123456L).address(unitAddress).build();
