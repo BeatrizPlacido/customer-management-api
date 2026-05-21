@@ -40,7 +40,7 @@ services:
       - maven_cache:/root/.m2
     command: mvn spring-boot:run
     ports:
-      - "8080:8080"
+      - "8082:8082"
     depends_on:
       db:
         condition: service_healthy
