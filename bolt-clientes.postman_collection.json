@@ -1,0 +1,259 @@
+{
+  "info": {
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "name": "Bolt Clientes API",
+    "description": "Collection completa da API de cadastro de clientes - Grupo Bolt.\n\nPorta: 8082\nBase URL: http://localhost:8082",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8082",
+      "type": "string"
+    },
+    {
+      "key": "clientId",
+      "value": "1",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Health",
+      "item": [
+        {
+          "name": "Health Check",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/health",
+              "host": ["{{baseUrl}}"],
+              "path": ["health"]
+            },
+            "description": "Verifica se a aplicação está no ar. Retorna 200 OK."
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clientes",
+      "item": [
+        {
+          "name": "Listar todos os clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clients",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients"]
+            },
+            "description": "Retorna todos os clientes ativos."
+          }
+        },
+        {
+          "name": "Últimos 20 clientes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clients/recent",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients", "recent"]
+            },
+            "description": "Retorna os últimos 20 clientes cadastrados em ordem decrescente."
+          }
+        },
+        {
+          "name": "Buscar cliente por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clients/{{clientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients", "{{clientId}}"]
+            },
+            "description": "Busca um cliente pelo ID. Altere a variável clientId conforme necessário."
+          }
+        },
+        {
+          "name": "Cadastrar cliente (sem unidade consumidora)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Maria Oliveira\",\n  \"document\": \"11122233344\",\n  \"address\": {\n    \"zipCode\": \"20040020\",\n    \"number\": \"45\",\n    \"complement\": \"Apto 301\"\n  },\n  \"consumerUnits\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clients",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients"]
+            },
+            "description": "Cadastra um cliente sem unidade consumidora. CEP 20040020 = Rio de Janeiro, RJ."
+          }
+        },
+        {
+          "name": "Cadastrar cliente (com unidade consumidora - RJ)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Carlos Souza\",\n  \"document\": \"55566677788\",\n  \"address\": {\n    \"zipCode\": \"20040020\",\n    \"number\": \"100\"\n  },\n  \"consumerUnits\": [\n    {\n      \"name\": \"Minha Casa\",\n      \"installationNumber\": 987654,\n      \"address\": {\n        \"zipCode\": \"20040020\",\n        \"number\": \"200\",\n        \"complement\": \"Casa 2\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clients",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients"]
+            },
+            "description": "Cadastra um cliente com unidade consumidora no RJ. Deve retornar 201."
+          }
+        },
+        {
+          "name": "Cadastrar cliente (unidade em MG - publica no Kafka)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Ana Lima\",\n  \"document\": \"99988877766\",\n  \"address\": {\n    \"zipCode\": \"20040020\",\n    \"number\": \"50\"\n  },\n  \"consumerUnits\": [\n    {\n      \"name\": \"Meu Comércio\",\n      \"installationNumber\": 111222,\n      \"address\": {\n        \"zipCode\": \"30112010\",\n        \"number\": \"300\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clients",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients"]
+            },
+            "description": "Cadastra cliente com unidade consumidora em MG (CEP 30112010 = Belo Horizonte). Deve retornar 201 e publicar no tópico analise_cliente_mg."
+          }
+        },
+        {
+          "name": "Cadastrar cliente (estado restrito SP - deve falhar)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Pedro Santos\",\n  \"document\": \"12312312312\",\n  \"address\": {\n    \"zipCode\": \"20040020\",\n    \"number\": \"10\"\n  },\n  \"consumerUnits\": [\n    {\n      \"name\": \"Escritório SP\",\n      \"installationNumber\": 333444,\n      \"address\": {\n        \"zipCode\": \"01310100\",\n        \"number\": \"1578\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clients",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients"]
+            },
+            "description": "Tentativa de cadastro com unidade consumidora em SP (CEP 01310100 = Av. Paulista). Deve retornar 400 - região não atendida."
+          }
+        },
+        {
+          "name": "Cadastrar cliente (documento duplicado - deve falhar)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Maria Oliveira Duplicada\",\n  \"document\": \"11122233344\",\n  \"address\": {\n    \"zipCode\": \"20040020\",\n    \"number\": \"99\"\n  },\n  \"consumerUnits\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clients",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients"]
+            },
+            "description": "Usa o mesmo documento do primeiro cadastro. Deve retornar 400 - documento já cadastrado."
+          }
+        },
+        {
+          "name": "Atualizar cliente",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Maria Oliveira Atualizada\",\n  \"document\": \"11122233344\",\n  \"address\": {\n    \"zipCode\": \"20040020\",\n    \"number\": \"45\",\n    \"complement\": \"Apto 302\"\n  },\n  \"consumerUnits\": [\n    {\n      \"name\": \"Minha Residência\",\n      \"installationNumber\": 777888,\n      \"address\": {\n        \"zipCode\": \"20040020\",\n        \"number\": \"45\"\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/clients/{{clientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients", "{{clientId}}"]
+            },
+            "description": "Atualiza os dados de um cliente. Altere a variável clientId conforme necessário."
+          }
+        },
+        {
+          "name": "Deletar cliente (remoção lógica)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/clients/{{clientId}}",
+              "host": ["{{baseUrl}}"],
+              "path": ["clients", "{{clientId}}"]
+            },
+            "description": "Realiza a remoção lógica do cliente (active = false). O registro permanece no banco. Retorna 204."
+          }
+        }
+      ]
+    }
+  ]
+}
