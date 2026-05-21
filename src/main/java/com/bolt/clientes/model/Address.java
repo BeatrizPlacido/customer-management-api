@@ -33,9 +33,6 @@ public class Address {
     @Column(nullable = false, length = 2)
     private String state;
 
-    @Column(nullable = false)
-    private String country;
-
     private String complement;
 
     @Enumerated(EnumType.STRING)

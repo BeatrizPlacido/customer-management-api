@@ -18,7 +18,6 @@ public class AddressResponseDTO {
     private String number;
     private String neighborhood;
     private String state;
-    private String country;
     private String complement;
     private AddressType type;
 }

@@ -38,7 +38,7 @@ class ClientControllerTest {
     private ClientResponseDTO sampleResponse() {
         AddressResponseDTO address = AddressResponseDTO.builder()
                 .id(1L).street("Rua Teste").zipCode("01310100").number("100")
-                .neighborhood("Bairro Teste").state("RJ").country("Brasil").type(AddressType.CLIENT).build();
+                .neighborhood("Bairro Teste").state("RJ").type(AddressType.CLIENT).build();
 
         return ClientResponseDTO.builder()
                 .id(1L).name("João Silva").document("12345678901")

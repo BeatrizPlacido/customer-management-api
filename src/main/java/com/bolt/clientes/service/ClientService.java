@@ -146,7 +146,6 @@ public class ClientService {
                 .number(request.getNumber())
                 .neighborhood(viaCep.getNeighborhood())
                 .state(viaCep.getState())
-                .country("Brasil")
                 .complement(request.getComplement())
                 .type(type)
                 .build();
@@ -202,7 +201,6 @@ public class ClientService {
                 .number(address.getNumber())
                 .neighborhood(address.getNeighborhood())
                 .state(address.getState())
-                .country(address.getCountry())
                 .complement(address.getComplement())
                 .type(address.getType())
                 .build();
